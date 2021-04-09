@@ -120,21 +120,23 @@ function onDocumentMouseDown( event ) {
   var rect = renderer.domElement.getBoundingClientRect();
   mouse.x = ( ( event.clientX - rect.left ) / ( rect.width - rect.left ) );
   mouse.y = - ( ( event.clientY - rect.top ) / ( rect.bottom - rect.top) ) + 1;
-  mouse.set(Math.floor(mouse.x / 0.25), Math.floor(mouse.y/0.25), 0);
-  var clickedMatrix = mouse.x*4 + mouse.y;
-  if(mouse.y > 0 && m.elements[clickedMatrix-1] == -1){
-    [m.elements[clickedMatrix-1], m.elements[clickedMatrix]] = [m.elements[clickedMatrix], m.elements[clickedMatrix-1]];
-  }
-  else if(mouse.y < 3 && m.elements[clickedMatrix+1] == -1){
-    [m.elements[clickedMatrix+1], m.elements[clickedMatrix]] = [m.elements[clickedMatrix], m.elements[clickedMatrix+1]];
+  if(mouse.x > 0 && mouse.y > 0 && mouse.x < 1 && mouse.y < 1){
+    mouse.set(Math.floor(mouse.x / 0.25), Math.floor(mouse.y/0.25), 0);
+    var clickedMatrix = mouse.x*4 + mouse.y;
+    if(mouse.y > 0 && m.elements[clickedMatrix-1] == -1){
+      [m.elements[clickedMatrix-1], m.elements[clickedMatrix]] = [m.elements[clickedMatrix], m.elements[clickedMatrix-1]];
+    }
+    else if(mouse.y < 3 && m.elements[clickedMatrix+1] == -1){
+      [m.elements[clickedMatrix+1], m.elements[clickedMatrix]] = [m.elements[clickedMatrix], m.elements[clickedMatrix+1]];
 
-  }
-  else if(mouse.x > 0 && m.elements[clickedMatrix-4] == -1){
-    [m.elements[clickedMatrix-4], m.elements[clickedMatrix]] = [m.elements[clickedMatrix], m.elements[clickedMatrix-4]];
-  }
-  else if(mouse.x < 3 && m.elements[clickedMatrix+4] == -1){
-    [m.elements[clickedMatrix+4], m.elements[clickedMatrix]] = [m.elements[clickedMatrix], m.elements[clickedMatrix+4]];
+    }
+    else if(mouse.x > 0 && m.elements[clickedMatrix-4] == -1){
+      [m.elements[clickedMatrix-4], m.elements[clickedMatrix]] = [m.elements[clickedMatrix], m.elements[clickedMatrix-4]];
+    }
+    else if(mouse.x < 3 && m.elements[clickedMatrix+4] == -1){
+      [m.elements[clickedMatrix+4], m.elements[clickedMatrix]] = [m.elements[clickedMatrix], m.elements[clickedMatrix+4]];
 
+    }
   }
   matShader.uniforms.currentMatrix.value = m;
 }
