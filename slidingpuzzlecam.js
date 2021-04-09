@@ -20,10 +20,13 @@ function main() {
   var emptyTile = -1;
   var nInversions = 0;
   for (var i = 0; i < 15; i++){
-    if (puzzle[i] == emptyTile)
+    if (puzzle[i] == emptyTile){
       continue;
-    for(var j = i+1; j < puzzle[j] && puzzle[j]!= emptyTile; j++){
-      nInversions++;
+    }
+    for(var j = i+1; j < 16; j++){
+      if(puzzle[j] < puzzle[i] && puzzle[j]!= emptyTile){
+        nInversions++;
+      }
     }
   }
   for(var i = 0; i < 16; i++){
