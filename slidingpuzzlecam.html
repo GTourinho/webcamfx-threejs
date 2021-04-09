@@ -1,0 +1,51 @@
+<html>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<head>
+		<title>SlidingPuzzleCam</title>
+	</head>
+
+	<script type="module" src="slidingpuzzlecam.js"></script>
+
+
+  <script id="slidingpuzzle-vs" type="x-shader/x-vertex">		
+    varying vec2 vUv;			
+    void main(void) {
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  </script>
+
+  <script id="slidingpuzzle-fs" type="x-shader/x-fragment">
+
+    precision mediump float;    
+    uniform sampler2D 	uSampler;
+    uniform mat4 currentMatrix;
+    uniform vec2 		uPixelSize;
+
+    varying vec2 		vUv;
+
+    void main(void) {	
+      vec4 c = texture2D(uSampler, vUv);
+      vec2 position = vec2(int(vUv.x / 0.25), int(vUv.y / 0.25));
+      int positionAtMatrix = int(currentMatrix[int(position.x)][int(position.y)]);
+      if(positionAtMatrix != -1){
+        vec2 positionAtVideo = vec2(int(positionAtMatrix / 4), int(positionAtMatrix % 4));
+        vec2 new_vUv = vec2(vUv.x - float(position.x) * 0.25, vUv.y - float(position.y) * 0.25);
+        vec4 newColor = texture2D(uSampler, new_vUv + vec2(float(positionAtVideo.x) * 0.25, float(positionAtVideo.y) * 0.25));
+        gl_FragColor = newColor;
+      }
+      else{
+        gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+      }
+
+    }
+	</script>
+
+	<body>
+    <h1>Efeitos na WebCam com Three.js</h1>
+		<h2>SlidingPuzzleCam (somente clique na peça que quiser mover)</h2><br />
+		<video id="video" style="display:none" autoplay playsinline></video>
+		<div id="WebGL-output" ></div>
+		<br/>
+	</body>
+</html>

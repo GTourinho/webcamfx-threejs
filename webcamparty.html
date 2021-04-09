@@ -1,0 +1,47 @@
+<html>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<head>
+		<title>Webcam Party</title>
+	</head>
+
+	<script type="module" src="webcamparty.js"></script>
+  <script id="party-vs" type="x-shader/x-vertex">		
+    varying vec2 vUv;			
+    void main(void) {
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+  </script>
+
+  <script id="party-fs" type="x-shader/x-fragment">
+
+    precision mediump float;    
+    uniform sampler2D 	uSampler;
+    uniform float		clock;
+    uniform int changePattern;
+
+    varying vec2 		vUv;
+
+    void main(void) {	
+      vec4 c = texture2D(uSampler, vUv);
+      if (changePattern == 0){
+        gl_FragColor = vec4(c.r * clock,c.g * clock * 0.01,c.b + clock * 0.25, c.a);
+      }
+      else if(changePattern == 1){
+        gl_FragColor = vec4(c.r + clock * 0.25,c.g * clock,c.b * clock * 0.01, c.a);
+      }
+      else{
+        gl_FragColor = vec4(c.r * clock * 0.01,c.g + clock * 0.25,c.b * clock, c.a);
+      }
+      
+    }
+	</script>
+
+	<body>
+    <h1>Efeitos na WebCam com Three.js</h1>  
+		<h2>WebCam Party</h2><br />
+		<video id="video" style="display:none" autoplay playsinline></video>
+		<div id="WebGL-output" ></div>
+		<br/>
+	</body>
+</html>
